@@ -1,0 +1,18 @@
+Book Factory
+Copyright (C) 2026 Book Factory contributors / irvingao-tech
+
+Book Factory is a modified and extended derivative of BookGen, originally
+created by Oliver Weissbarth and subsequently contributed to by Seojin Sim
+and other BookGen contributors.
+
+Original project:
+https://github.com/oweissbarth/bookGen
+
+The original source files retain their copyright and GPL notices. New and
+modified portions are distributed under the GNU General Public License,
+version 3 or (at your option) any later version (GPL-3.0-or-later).
+
+The name "Book Factory" refers to this modified distribution. Retained
+internal identifiers such as bookgen2, bookgen.*, BookGenSettings, and
+BookGenGroupingProperties exist for compatibility with existing Blender
+files and installations.

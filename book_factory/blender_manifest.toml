@@ -1,0 +1,9 @@
+schema_version = "1.0.0"
+id = "bookgen2"
+version = "1.0.0"
+name = "Book Factory"
+tagline = "Build procedural shelves, stacks, and editable book assets"
+maintainer = "Book Factory contributors"
+type = "add-on"
+blender_version_min = "4.3.0"
+license = ["SPDX:GPL-3.0-or-later"]
