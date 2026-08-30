@@ -2,6 +2,7 @@
 Contains the operators for manipulating stacks of books.
 """
 import logging
+from math import atan2, cos, radians, sin
 
 import bpy
 from mathutils import Vector
@@ -27,6 +28,28 @@ from .utils import (
 )
 from .ui_outline import BookGenShelfOutline
 from .translations import tr
+
+
+def snap_direction_to_angle(direction, normal, increment_degrees):
+    """Snap a planar direction around its surface normal to a world-projected reference axis."""
+    normal = Vector(normal).normalized()
+    direction = Vector(direction) - normal * Vector(direction).dot(normal)
+    if direction.length_squared < 1e-12:
+        return None
+    direction.normalize()
+
+    reference = Vector((1.0, 0.0, 0.0))
+    reference -= normal * reference.dot(normal)
+    if reference.length_squared < 1e-12:
+        reference = Vector((0.0, 1.0, 0.0))
+        reference -= normal * reference.dot(normal)
+    reference.normalize()
+    tangent = normal.cross(reference).normalized()
+
+    angle = atan2(direction.dot(tangent), direction.dot(reference))
+    increment = radians(max(float(increment_degrees), 0.1))
+    snapped_angle = round(angle / increment) * increment
+    return (reference * cos(snapped_angle) + tangent * sin(snapped_angle)).normalized()
 
 
 class BOOKGEN_OT_SelectStack(bpy.types.Operator):
@@ -94,17 +117,17 @@ class BOOKGEN_OT_SelectStack(bpy.types.Operator):
 
         mouse_x, mouse_y = event.mouse_region_x, event.mouse_region_y
         if event.type == "MOUSEMOVE":
-            return self.handle_mouse_move(context, mouse_x, mouse_y)
+            return self.handle_mouse_move(context, mouse_x, mouse_y, event.shift)
         if event.type in {"MIDDLEMOUSE", "WHEELUPMOUSE", "WHEELDOWNMOUSE"}:
             return {"PASS_THROUGH"}
         if event.type == "LEFTMOUSE" and event.value == "RELEASE":
-            return self.handle_confirm(context, mouse_x, mouse_y)
+            return self.handle_confirm(context, mouse_x, mouse_y, event.shift)
         if event.type in {"RIGHTMOUSE", "ESC"}:
             return self.handle_cancel(context)
 
         return {"RUNNING_MODAL"}
 
-    def handle_mouse_move(self, context, mouse_x, mouse_y):
+    def handle_mouse_move(self, context, mouse_x, mouse_y, free_rotation=False):
         """
         Update the gizmo for current mouse position if necessary.
         Otherwise remove the gizmo.
@@ -150,11 +173,11 @@ class BOOKGEN_OT_SelectStack(bpy.types.Operator):
 
             self.height = (points[0] - self.origin).length
 
-        self.refresh_preview(context, mouse_x, mouse_y)
+        self.refresh_preview(context, mouse_x, mouse_y, free_rotation)
 
         return {"RUNNING_MODAL"}
 
-    def handle_confirm(self, context, mouse_x, mouse_y):
+    def handle_confirm(self, context, mouse_x, mouse_y, free_rotation=False):
         """If it is the first click and there is and object under the cursor set the stack origin.
         If it is the second click and there is and object under the cursor set the stack forward.
         If it is the third click set the stack height.
@@ -176,16 +199,14 @@ class BOOKGEN_OT_SelectStack(bpy.types.Operator):
             normal_offset_2d = project_to_screen(context, self.origin + self.origin_normal)
             self.origin_normal_2d = (normal_offset_2d - self.origin_2d).normalized()
             context.workspace.status_text_set(
-                tr(context, "Move the mouse and click to set the stack direction")
+                tr(context, "Move and click to set direction; hold Shift for free rotation")
             )
 
             return {"RUNNING_MODAL"}
         if self.forward is None:
-            front = get_click_on_plane(context, mouse_x, mouse_y, self.origin, self.origin_normal)
-            original_direction = front - self.origin
-            distance = original_direction.dot(self.origin_normal)
-            projected_front = front - distance * self.origin_normal
-            self.forward = (projected_front - self.origin).normalized()
+            self.forward = self.get_forward(context, mouse_x, mouse_y, free_rotation)
+            if self.forward is None:
+                return {"RUNNING_MODAL"}
             context.workspace.status_text_set(
                 tr(context, "Move upward and click to set the stack height")
             )
@@ -267,7 +288,7 @@ class BOOKGEN_OT_SelectStack(bpy.types.Operator):
         self.gizmo.remove()
         self.outline.disable_outline()
 
-    def refresh_preview(self, context, mouse_x, mouse_y):
+    def refresh_preview(self, context, mouse_x, mouse_y, free_rotation=False):
         """
         Collect the current parameters of the stack,
         generate the books and update the gizmo and outline accordingly.
@@ -285,13 +306,9 @@ class BOOKGEN_OT_SelectStack(bpy.types.Operator):
             return
 
         if self.forward is None:
-            front = get_click_on_plane(context, mouse_x, mouse_y, self.origin, self.origin_normal)
-            if front is None:
+            forward = self.get_forward(context, mouse_x, mouse_y, free_rotation)
+            if forward is None:
                 return
-            original_direction = front - self.origin
-            distance = original_direction.dot(self.origin_normal)
-            projected_front = front - distance * self.origin_normal
-            forward = (projected_front - self.origin).normalized()
             self.gizmo.update(self.origin, forward, self.origin_normal, None)
             return
 
@@ -307,3 +324,19 @@ class BOOKGEN_OT_SelectStack(bpy.types.Operator):
         self.outline.enable_outline(*stack.get_geometry(), context)
 
         self.gizmo.update(self.origin, self.forward, self.origin_normal, self.height)
+
+    def get_forward(self, context, mouse_x, mouse_y, free_rotation=False):
+        """Return the preview/final stack direction with preference-based angle snapping."""
+        front = get_click_on_plane(context, mouse_x, mouse_y, self.origin, self.origin_normal)
+        if front is None:
+            return None
+        direction = front - self.origin
+        direction -= Vector(self.origin_normal) * direction.dot(self.origin_normal)
+        if direction.length_squared < 1e-12:
+            return None
+        direction.normalize()
+        if free_rotation:
+            return direction
+        addon = context.preferences.addons.get(__package__)
+        increment = getattr(addon.preferences, "stack_angle_snap", "15") if addon else "15"
+        return snap_direction_to_angle(direction, self.origin_normal, float(increment))

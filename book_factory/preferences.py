@@ -51,6 +51,19 @@ class BOOKGEN_AddonPreferences(AddonPreferences):
         subtype="TIME",
     )
 
+    stack_angle_snap: EnumProperty(
+        name="Stack direction snap",
+        description="Angle increment used while choosing a Stack forward direction",
+        items=(
+            ("5", "5°", "Snap every 5 degrees"),
+            ("10", "10°", "Snap every 10 degrees"),
+            ("15", "15°", "Snap every 15 degrees"),
+            ("30", "30°", "Snap every 30 degrees"),
+            ("45", "45°", "Snap every 45 degrees"),
+        ),
+        default="15",
+    )
+
     def draw(self, context):
         """Draws the add-on preferences
 
@@ -65,3 +78,5 @@ class BOOKGEN_AddonPreferences(AddonPreferences):
         row = layout.row()
         row.enabled = self.lazy_update
         row.prop(self, "update_delay", text=tr(context, "Update delay"))
+        layout.separator()
+        layout.prop(self, "stack_angle_snap", text=tr(context, "Stack direction snap"))

@@ -76,6 +76,7 @@ ZH_HANS = {
     "Debounced updates": "防抖更新",
     "Update delay": "更新延迟",
     "Debounced updates improve responsiveness for large book collections.": "防抖更新可提高大型书籍集合的调整响应速度。",
+    "Stack direction snap": "书堆方向吸附",
     "Var": "变化",
     "Front cover": "封面朝上",
     "Back cover": "封底朝上",
@@ -118,6 +119,7 @@ ZH_HANS = {
     "Move the mouse and click a surface to place the shelf endpoint": "移动鼠标并单击表面以设置书架终点",
     "Click a surface to place the shelf start; Esc to cancel": "单击表面以设置书架起点；按 Esc 取消",
     "Move the mouse and click to set the stack direction": "移动鼠标并单击以设置书堆朝向",
+    "Move and click to set direction; hold Shift for free rotation": "移动并单击设置方向；按住 Shift 可自由旋转",
     "Move upward and click to set the stack height": "向上移动并单击以设置书堆高度",
     "Click a surface to place the stack; Esc to cancel": "单击表面以放置书堆；按 Esc 取消",
 }
@@ -188,6 +190,7 @@ JA = {
     "Debounced updates": "遅延更新",
     "Update delay": "更新遅延",
     "Debounced updates improve responsiveness for large book collections.": "大量の本を調整する際の応答性を向上します。",
+    "Stack direction snap": "積み重ね方向スナップ",
     "Var": "変化",
     "Front cover": "表紙を上",
     "Back cover": "裏表紙を上",
@@ -201,6 +204,7 @@ JA = {
     "Move the mouse and click a surface to place the shelf endpoint": "マウスを移動し、面をクリックして本棚の終点を設定",
     "Click a surface to place the shelf start; Esc to cancel": "面をクリックして本棚の始点を設定；Escでキャンセル",
     "Move the mouse and click to set the stack direction": "マウスを移動してクリックし、積み重ねの向きを設定",
+    "Move and click to set direction; hold Shift for free rotation": "移動してクリックで方向を設定；Shiftで自由回転",
     "Move upward and click to set the stack height": "上方向へ移動してクリックし、積み重ねの高さを設定",
     "Click a surface to place the stack; Esc to cancel": "面をクリックして積み重ねを配置；Escでキャンセル",
 }

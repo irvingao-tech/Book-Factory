@@ -1,4 +1,4 @@
-# Book Factory V1.2
+# Book Factory V1.3
 
 Book Factory is a procedural book-building add-on for Blender. It creates editable shelves, horizontal stacks,
 standard books, and lightweight single-shell book assets with deterministic variation, curved book geometry,
@@ -33,15 +33,15 @@ Book Factory is free software distributed under **GPL-3.0-or-later**.
 
 Download the installable package from:
 
-[`dist/Book-Factory-V1.2.zip`](dist/Book-Factory-V1.2.zip)
+[`dist/Book-Factory-V1.3.zip`](dist/Book-Factory-V1.3.zip)
 
 ## Installation
 
-1. Download `Book-Factory-V1.2.zip`.
+1. Download `Book-Factory-V1.3.zip`.
 2. Open Blender.
 3. Go to `Edit > Preferences > Add-ons` or `Get Extensions`.
 4. Open the menu and choose `Install from Disk`.
-5. Select `Book-Factory-V1.2.zip`.
+5. Select `Book-Factory-V1.3.zip`.
 6. Enable **Book Factory** if Blender does not enable it automatically.
 7. Open the 3D View sidebar with `N` and select the **Book Factory** tab.
 
@@ -117,6 +117,10 @@ Shelf offsets follow each book's local curve direction and do not alter horizont
 4. Click to set the local forward direction.
 5. Move upward and click to set the stack height.
 6. Adjust the selected Stack in the Book Factory panel.
+
+The direction step snaps to a configurable angle. Hold `Shift` while moving/clicking to temporarily use free rotation.
+Configure the increment under `Preferences > Add-ons > Book Factory > Stack direction snap` with 5°, 10°, 15°,
+30°, or 45°. The default is 15°.
 
 ### Stack Layout Controls
 
@@ -261,7 +265,8 @@ Book-Factory/
 |-- dist/
 |   |-- Book-Factory-V1.0.zip
 |   |-- Book-Factory-V1.1.zip
-|   `-- Book-Factory-V1.2.zip
+|   |-- Book-Factory-V1.2.zip
+|   `-- Book-Factory-V1.3.zip
 |-- LICENSE                    GPL-3.0 license text
 |-- NOTICE                     attribution and derivative-work notice
 `-- README.md
@@ -320,6 +325,6 @@ Book Factory 是一个用于 Blender 的程序化书籍生成工具，可创建�
 - 按书本顺序排列到 0-1 的 UV
 - 英文、中文、日文界面切换
 
-安装包：[`dist/Book-Factory-V1.2.zip`](dist/Book-Factory-V1.2.zip)
+安装包：[`dist/Book-Factory-V1.3.zip`](dist/Book-Factory-V1.3.zip)
 
 许可证：GPL-3.0-or-later。该项目基于 Oliver Weissbarth 等贡献者开发的 BookGen，原作者及许可证信息已保留。
