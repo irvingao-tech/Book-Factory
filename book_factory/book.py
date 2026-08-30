@@ -92,14 +92,14 @@ class Book:
         self.spine_rounding = spine_rounding
         self.spine_segments = unified_segments
         self.low_poly = low_poly
-        self.low_poly_segments = min(max(int(low_poly_segments), 2), 6)
+        self.low_poly_segments = min(max(int(low_poly_segments), 1), 6)
         self.planar_offset = (
             Vector((0.0, float(planar_offset)))
             if isinstance(planar_offset, (int, float))
             else Vector(planar_offset)
         )
         self.location = Vector([0, 0, 0])
-        self.rotation = Vector([0, 0, 0])
+        self.rotation = Matrix.Identity(3)
 
         self.obj = None
 
@@ -195,10 +195,17 @@ class Book:
                 self.obj.data.materials.append(self.cover_material)
 
         if self.page_material:
+            if not self.obj.data.materials:
+                default_material = bpy.data.materials.get("Book Factory Default")
+                if default_material is None:
+                    default_material = bpy.data.materials.new("Book Factory Default")
+                    default_material.diffuse_color = (0.8, 0.8, 0.8, 1.0)
+                self.obj.data.materials.append(default_material)
+            page_material_index = len(self.obj.data.materials)
             self.obj.data.materials.append(self.page_material)
             bm.faces.ensure_lookup_table()
             for face in bm.faces[self.page_face_start :]:
-                face.material_index = 1
+                face.material_index = page_material_index
 
         self.obj.matrix_world = Matrix.Translation(self.location) @ self.rotation.to_4x4()
 

@@ -14,7 +14,7 @@ def get_low_poly_geometry(
     curve_segments,
 ):
     """Return vertices, quad faces, UVs, and the page-face start index."""
-    segments = min(max(2, int(curve_segments)), 6)
+    segments = min(max(1, int(curve_segments)), 6)
     half_width = width / 2.0
     back_side = -depth / 2.0
     front_side = depth / 2.0

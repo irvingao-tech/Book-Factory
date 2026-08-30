@@ -54,7 +54,7 @@ from .freeze_operator import BOOKGEN_OT_MergeFreeze
 from .preferences import BOOKGEN_AddonPreferences
 from .translations import TRANSLATIONS
 
-BOOK_FACTORY_VERSION = (1, 0, 0)
+BOOK_FACTORY_VERSION = (1, 1, 0)
 DATA_SCHEMA_VERSION = (4, 3, 0)
 BOOKGEN_VERSION = BOOK_FACTORY_VERSION
 

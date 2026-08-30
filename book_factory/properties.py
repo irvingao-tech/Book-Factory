@@ -88,10 +88,12 @@ def localized_enum_items(context, cache_name, items):
     language = get_language(context)
     cache_key = (cache_name, language)
     if cache_key not in _ENUM_CACHE:
-        _ENUM_CACHE[cache_key] = tuple(
-            (identifier, tr(context, label), description, 0, index)
-            for index, (identifier, label, description) in enumerate(items)
-        )
+        translated = []
+        for index, item in enumerate(items):
+            identifier, label, description = item[:3]
+            numeric_id = item[3] if len(item) > 3 else index
+            translated.append((identifier, tr(context, label), description, 0, numeric_id))
+        _ENUM_CACHE[cache_key] = tuple(translated)
     return _ENUM_CACHE[cache_key]
 
 
@@ -139,9 +141,10 @@ def low_poly_segment_items(_self, context):
         context,
         "low_poly_segments",
         (
-            ("2", "2 - Minimum", "Three rails including one center control line"),
-            ("4", "4 - Balanced", "Five rails with balanced shape and cost"),
-            ("6", "6 - Smooth", "Seven rails for a smoother low-poly silhouette"),
+            ("1", "1 - Box", "A rectangular prism with no intermediate curve rails", 3),
+            ("2", "2 - Minimum", "Three rails including one center control line", 0),
+            ("4", "4 - Balanced", "Five rails with balanced shape and cost", 1),
+            ("6", "6 - Smooth", "Seven rails for a smoother low-poly silhouette", 2),
         ),
     )
 

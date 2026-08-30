@@ -1,4 +1,4 @@
-# Book Factory V1.0
+# Book Factory V1.1
 
 Book Factory is a procedural book-building add-on for Blender. It creates editable shelves, horizontal stacks,
 standard books, and lightweight single-shell book assets with deterministic variation, curved book geometry,
@@ -33,15 +33,15 @@ Book Factory is free software distributed under **GPL-3.0-or-later**.
 
 Download the installable package from:
 
-[`dist/Book-Factory-V1.0.zip`](dist/Book-Factory-V1.0.zip)
+[`dist/Book-Factory-V1.1.zip`](dist/Book-Factory-V1.1.zip)
 
 ## Installation
 
-1. Download `Book-Factory-V1.0.zip`.
+1. Download `Book-Factory-V1.1.zip`.
 2. Open Blender.
 3. Go to `Edit > Preferences > Add-ons` or `Get Extensions`.
 4. Open the menu and choose `Install from Disk`.
-5. Select `Book-Factory-V1.0.zip`.
+5. Select `Book-Factory-V1.1.zip`.
 6. Enable **Book Factory** if Blender does not enable it automatically.
 7. Open the 3D View sidebar with `N` and select the **Book Factory** tab.
 
@@ -171,11 +171,18 @@ the visible curved spine and fore-edge side topology.
 
 | Setting | Vertices per book | Quad faces per book | Recommended use |
 | --- | ---: | ---: | --- |
+| 1 - Box | 8 | 6 | Maximum reduction; rectangular prism |
 | 2 - Minimum | 12 | 10 | Distant shots and very large libraries |
 | 4 - Balanced | 20 | 18 | General use and default |
 | 6 - Smooth | 28 | 26 | Closer views |
 
 The page fore edge can retain `Page Material`; the remaining shell uses `Cover Material`.
+
+### V1.1 Low-Poly Box Mode
+
+`1 - Box` removes all intermediate curve rails and creates a plain rectangular prism with 8 vertices and 6 quad
+faces. It is intended for extreme background density and proxy layouts. Spine and fore-edge curve controls remain
+available for the 2, 4, and 6 segment modes.
 
 ## Materials
 
@@ -244,7 +251,8 @@ Book-Factory/
 |   |-- icons/
 |   `-- shaders/
 |-- dist/
-|   `-- Book-Factory-V1.0.zip
+|   |-- Book-Factory-V1.0.zip
+|   `-- Book-Factory-V1.1.zip
 |-- LICENSE                    GPL-3.0 license text
 |-- NOTICE                     attribution and derivative-work notice
 `-- README.md
@@ -303,6 +311,6 @@ Book Factory 是一个用于 Blender 的程序化书籍生成工具，可创建�
 - 按书本顺序排列到 0-1 的 UV
 - 英文、中文、日文界面切换
 
-安装包：[`dist/Book-Factory-V1.0.zip`](dist/Book-Factory-V1.0.zip)
+安装包：[`dist/Book-Factory-V1.1.zip`](dist/Book-Factory-V1.1.zip)
 
 许可证：GPL-3.0-or-later。该项目基于 Oliver Weissbarth 等贡献者开发的 BookGen，原作者及许可证信息已保留。
