@@ -1,4 +1,4 @@
-# Book Factory V1.1
+# Book Factory V1.2
 
 Book Factory is a procedural book-building add-on for Blender. It creates editable shelves, horizontal stacks,
 standard books, and lightweight single-shell book assets with deterministic variation, curved book geometry,
@@ -33,15 +33,15 @@ Book Factory is free software distributed under **GPL-3.0-or-later**.
 
 Download the installable package from:
 
-[`dist/Book-Factory-V1.1.zip`](dist/Book-Factory-V1.1.zip)
+[`dist/Book-Factory-V1.2.zip`](dist/Book-Factory-V1.2.zip)
 
 ## Installation
 
-1. Download `Book-Factory-V1.1.zip`.
+1. Download `Book-Factory-V1.2.zip`.
 2. Open Blender.
 3. Go to `Edit > Preferences > Add-ons` or `Get Extensions`.
 4. Open the menu and choose `Install from Disk`.
-5. Select `Book-Factory-V1.1.zip`.
+5. Select `Book-Factory-V1.2.zip`.
 6. Enable **Book Factory** if Blender does not enable it automatically.
 7. Open the 3D View sidebar with `N` and select the **Book Factory** tab.
 
@@ -76,6 +76,14 @@ The compact interface is divided into four collapsible cards:
 
 Only properties relevant to the selected Shelf or Stack are shown. Shared appearance and model properties remain
 visible in both modes.
+
+### Bidirectional Selection Sync
+
+- Clicking a row in the Book Factory group list selects and activates its procedural object in the 3D View.
+- Clicking a procedural Shelf or Stack object in the 3D View activates the corresponding list row.
+- Clicking a frozen copy activates its original source row through the stored `source_group` property.
+- Unrelated scene objects do not change the Book Factory list selection.
+- The previous manual bounding-box highlight button is no longer required or displayed.
 
 ## Shelf Workflow
 
@@ -252,7 +260,8 @@ Book-Factory/
 |   `-- shaders/
 |-- dist/
 |   |-- Book-Factory-V1.0.zip
-|   `-- Book-Factory-V1.1.zip
+|   |-- Book-Factory-V1.1.zip
+|   `-- Book-Factory-V1.2.zip
 |-- LICENSE                    GPL-3.0 license text
 |-- NOTICE                     attribution and derivative-work notice
 `-- README.md
@@ -311,6 +320,6 @@ Book Factory 是一个用于 Blender 的程序化书籍生成工具，可创建�
 - 按书本顺序排列到 0-1 的 UV
 - 英文、中文、日文界面切换
 
-安装包：[`dist/Book-Factory-V1.1.zip`](dist/Book-Factory-V1.1.zip)
+安装包：[`dist/Book-Factory-V1.2.zip`](dist/Book-Factory-V1.2.zip)
 
 许可证：GPL-3.0-or-later。该项目基于 Oliver Weissbarth 等贡献者开发的 BookGen，原作者及许可证信息已保留。

@@ -23,8 +23,13 @@ BookGen is a add-on for the 3D graphics software Blender. It allows to procedura
 from bpy.app.handlers import persistent
 
 from .properties import BookGenProperties, BookGenGroupingProperties, BookGenAddonProperties
-from .utils import get_bookgen_version, set_bookgen_version
-from .shelf_list import BOOKGEN_UL_Shelves
+from .utils import (
+    get_bookgen_version,
+    set_bookgen_version,
+    subscribe_selection_sync,
+    unsubscribe_selection_sync,
+)
+from .shelf_list import BOOKGEN_OT_ActivateGrouping, BOOKGEN_UL_Shelves
 from .versioning import handle_version_upgrade
 from .panel import (
     BOOKGEN_PT_LayoutPanel,
@@ -54,7 +59,7 @@ from .freeze_operator import BOOKGEN_OT_MergeFreeze
 from .preferences import BOOKGEN_AddonPreferences
 from .translations import TRANSLATIONS
 
-BOOK_FACTORY_VERSION = (1, 1, 0)
+BOOK_FACTORY_VERSION = (1, 2, 0)
 DATA_SCHEMA_VERSION = (4, 3, 0)
 BOOKGEN_VERSION = BOOK_FACTORY_VERSION
 
@@ -81,6 +86,7 @@ classes = [
     BOOKGEN_OT_UnlinkGrouping,
     BOOKGEN_OT_MergeFreeze,
     BOOKGEN_OT_SetUIMode,
+    BOOKGEN_OT_ActivateGrouping,
     BOOKGEN_PT_MainPanel,
     BOOKGEN_PT_LayoutPanel,
     BOOKGEN_PT_BookPanel,
@@ -130,6 +136,7 @@ def _cleanup_stale_registration():
     cancel_update = getattr(properties, "cancel_pending_update", None)
     if cancel_update is not None:
         cancel_update()
+    unsubscribe_selection_sync(BookGenAddonProperties)
     if bpy.app.timers.is_registered(_migrate_loaded_scenes):
         bpy.app.timers.unregister(_migrate_loaded_scenes)
 
@@ -177,6 +184,7 @@ def _cleanup_stale_registration():
         if registered_class is None:
             continue
         if cls.__name__ == "BookGenAddonProperties":
+            bpy.msgbus.clear_by_owner(registered_class)
             outline = getattr(registered_class, "outline", None)
             if outline is not None:
                 outline.disable_outline()
@@ -219,6 +227,7 @@ def register():
         bpy.types.Collection.BookGenGroupingProperties = bpy.props.PointerProperty(type=BookGenGroupingProperties)
         bpy.types.Scene.BookGenSettings = bpy.props.CollectionProperty(type=BookGenProperties)
         bpy.types.Scene.BookGenAddonProperties = bpy.props.PointerProperty(type=BookGenAddonProperties)
+        subscribe_selection_sync(BookGenAddonProperties)
 
         bpy.app.handlers.load_post.append(bookgen_startup)
         bpy.app.handlers.save_pre.append(bookgen_mark_version)
@@ -254,6 +263,8 @@ def bookgen_startup(_dummy):
     Ensure that the outline is disabled on start-up.
     """
     import bpy
+
+    subscribe_selection_sync(BookGenAddonProperties)
 
     bpy.context.scene.BookGenAddonProperties.outline_active = False
 

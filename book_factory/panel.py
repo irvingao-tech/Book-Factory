@@ -334,7 +334,7 @@ class BOOKGEN_PT_MainPanel(bpy.types.Panel):
     Draws the main bookgen panel
     """
 
-    bl_label = "Book Factory V1.1"
+    bl_label = "Book Factory V1.2"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "Book Factory"
@@ -381,7 +381,6 @@ class BOOKGEN_PT_MainPanel(bpy.types.Panel):
             )
             group_actions = group_row.column(align=True)
             group_actions.operator("bookgen.remove_grouping", icon="X", text="")
-            group_actions.prop(ui_state, "outline_active", icon="SHADING_BBOX", icon_only=True)
             group_actions.operator("bookgen.unlink_grouping", icon="UNLINKED", text="")
 
         if active_group:

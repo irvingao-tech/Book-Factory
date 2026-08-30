@@ -23,6 +23,7 @@ from .utils import (
     get_shelf_parameters,
     get_settings_by_name,
     get_stack_parameters,
+    select_grouping_objects,
 )
 from .shelf import Shelf
 from .stack import Stack
@@ -166,6 +167,7 @@ class BookGenAddonProperties(bpy.types.PropertyGroup):
         active_grouping = get_shelf_collection_by_index(context, properties.active_shelf)
         if active_grouping is not None:
             properties.ui_mode = active_grouping.BookGenGroupingProperties.grouping_type
+            select_grouping_objects(context, active_grouping)
         if properties.outline_active and properties.active_shelf != -1:
             if BookGenAddonProperties.outline is None:
                 BookGenAddonProperties.outline = BookGenShelfOutline()

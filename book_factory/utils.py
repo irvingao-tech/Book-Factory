@@ -11,6 +11,9 @@ from mathutils import Vector
 from .presets import BOOK_PRESETS
 
 bookgen_version = None
+selection_sync_active = False
+last_active_object_pointer = 0
+SELECTION_TIMER_KEY = "book_factory_selection_sync_timer"
 
 def get_bookgen_version():
     """Returns the version number of bookgen
@@ -464,6 +467,113 @@ def get_active_grouping(context, create=True):
     """
     shelf_id = context.scene.BookGenAddonProperties.active_shelf
     return get_shelf_collection_by_index(context, shelf_id, create=create)
+
+
+def redraw_book_factory_ui(context):
+    """Redraw all open areas after a selection synchronization."""
+    window_manager = getattr(context, "window_manager", None)
+    if window_manager is None:
+        return
+    for window in window_manager.windows:
+        for area in window.screen.areas:
+            area.tag_redraw()
+
+
+def select_grouping_objects(context, grouping):
+    """Select the scene objects belonging to a grouping selected in the UI list."""
+    global selection_sync_active, last_active_object_pointer
+    if selection_sync_active or grouping is None or not getattr(context, "view_layer", None):
+        return
+    objects = [obj for obj in grouping.objects if obj.name in context.view_layer.objects]
+    if not objects:
+        return
+    selection_sync_active = True
+    try:
+        for obj in context.selected_objects:
+            obj.select_set(False)
+        for obj in objects:
+            obj.select_set(True)
+        context.view_layer.objects.active = objects[0]
+        last_active_object_pointer = objects[0].as_pointer()
+    finally:
+        selection_sync_active = False
+    redraw_book_factory_ui(context)
+
+
+def sync_grouping_from_active_object():
+    """Activate the matching UI-list row when the active scene object changes."""
+    global selection_sync_active
+    if selection_sync_active:
+        return
+    context = bpy.context
+    scene = getattr(context, "scene", None)
+    view_layer = getattr(context, "view_layer", None)
+    if scene is None or view_layer is None or not hasattr(scene, "BookGenAddonProperties"):
+        return
+    active_object = view_layer.objects.active
+    if active_object is None:
+        return
+    collection = get_bookgen_collection(context, create=False)
+    if collection is None:
+        return
+
+    source_group = active_object.get("source_group")
+    matching_index = -1
+    for index, grouping in enumerate(collection.children):
+        if active_object.name in grouping.objects or (source_group and grouping.name == source_group):
+            matching_index = index
+            break
+    if matching_index == -1 or scene.BookGenAddonProperties.active_shelf == matching_index:
+        return
+
+    selection_sync_active = True
+    try:
+        scene.BookGenAddonProperties.active_shelf = matching_index
+    finally:
+        selection_sync_active = False
+    redraw_book_factory_ui(context)
+
+
+def subscribe_selection_sync(owner):
+    """Subscribe to Blender active-object changes for scene-to-list synchronization."""
+    global last_active_object_pointer
+    bpy.msgbus.clear_by_owner(owner)
+    bpy.msgbus.subscribe_rna(
+        key=(bpy.types.LayerObjects, "active"),
+        owner=owner,
+        args=(),
+        notify=sync_grouping_from_active_object,
+        options={"PERSISTENT"},
+    )
+    old_timer = bpy.app.driver_namespace.get(SELECTION_TIMER_KEY)
+    if old_timer is not None and bpy.app.timers.is_registered(old_timer):
+        bpy.app.timers.unregister(old_timer)
+    last_active_object_pointer = 0
+    bpy.app.driver_namespace[SELECTION_TIMER_KEY] = poll_active_object_selection
+    bpy.app.timers.register(poll_active_object_selection, first_interval=0.1, persistent=True)
+
+
+def poll_active_object_selection():
+    """Reliable low-cost fallback for active-object changes missed by Message Bus."""
+    global last_active_object_pointer
+    context = bpy.context
+    view_layer = getattr(context, "view_layer", None)
+    if view_layer is None:
+        return 0.1
+    active_object = view_layer.objects.active
+    pointer = active_object.as_pointer() if active_object else 0
+    if pointer != last_active_object_pointer:
+        last_active_object_pointer = pointer
+        sync_grouping_from_active_object()
+    return 0.1
+
+
+def unsubscribe_selection_sync(owner):
+    """Remove Message Bus and timer synchronization callbacks."""
+    bpy.msgbus.clear_by_owner(owner)
+    timer = bpy.app.driver_namespace.pop(SELECTION_TIMER_KEY, None)
+    if timer is not None and bpy.app.timers.is_registered(timer):
+        bpy.app.timers.unregister(timer)
 
 
 def get_active_settings(context, create=True):
