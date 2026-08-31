@@ -334,7 +334,7 @@ class BOOKGEN_PT_MainPanel(bpy.types.Panel):
     Draws the main bookgen panel
     """
 
-    bl_label = "Book Factory V1.3"
+    bl_label = "Book Factory V1.4"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "Book Factory"

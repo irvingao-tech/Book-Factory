@@ -93,13 +93,14 @@ class Shelf:
             book.location += Vector((-book.width / 2, 0, 0))
         book.location = Matrix.Rotation(book.lean_angle, 3, "Y") @ book.location
 
-        # Follow a constant-curvature arc while preserving local alignment and lean.
-        along, lateral, tangent = arc_coordinates(offset, self.width, self.parameters["group_curve"])
-        curve_rotation = Matrix.Rotation(tangent, 3, "Z")
-        book.location = Vector((along, lateral, 0)) + curve_rotation @ book.location
+        # Curve only depth positions; preserve spacing and parallel book orientation.
+        _arc_along, lateral, _tangent = arc_coordinates(
+            offset, self.width, self.parameters["group_curve"]
+        )
+        book.location += Vector((offset, lateral, 0))
         book.location = self.rotation_matrix @ book.location
 
-        book.rotation = self.rotation_matrix @ curve_rotation @ Matrix.Rotation(book.lean_angle, 3, "Y")
+        book.rotation = self.rotation_matrix @ Matrix.Rotation(book.lean_angle, 3, "Y")
 
         book.location += self.origin
 

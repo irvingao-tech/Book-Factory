@@ -1,4 +1,4 @@
-# Book Factory V1.3
+# Book Factory V1.4
 
 Book Factory is a procedural book-building add-on for Blender. It creates editable shelves, horizontal stacks,
 standard books, and lightweight single-shell book assets with deterministic variation, curved book geometry,
@@ -33,15 +33,15 @@ Book Factory is free software distributed under **GPL-3.0-or-later**.
 
 Download the installable package from:
 
-[`dist/Book-Factory-V1.3.zip`](dist/Book-Factory-V1.3.zip)
+[`dist/Book-Factory-V1.4.zip`](dist/Book-Factory-V1.4.zip)
 
 ## Installation
 
-1. Download `Book-Factory-V1.3.zip`.
+1. Download `Book-Factory-V1.4.zip`.
 2. Open Blender.
 3. Go to `Edit > Preferences > Add-ons` or `Get Extensions`.
 4. Open the menu and choose `Install from Disk`.
-5. Select `Book-Factory-V1.3.zip`.
+5. Select `Book-Factory-V1.4.zip`.
 6. Enable **Book Factory** if Blender does not enable it automatically.
 7. Open the 3D View sidebar with `N` and select the **Book Factory** tab.
 
@@ -85,6 +85,12 @@ visible in both modes.
 - Unrelated scene objects do not change the Book Factory list selection.
 - The previous manual bounding-box highlight button is no longer required or displayed.
 
+### V1.4 Parallel Curve Layout
+
+Shelf and Stack curve controls now change book positions only. They preserve the original spacing axis and do not
+rotate books to follow curve tangents. This prevents fan-shaped overlap and model intersections. Shelf Leaning and
+Stack Rotation Variation remain explicit, independent orientation controls.
+
 ## Shelf Workflow
 
 1. Ensure the scene contains a mesh surface, such as a shelf board.
@@ -99,7 +105,7 @@ During endpoint placement, use `X`, `Y`, or `Z` to constrain the direction.
 ### Shelf Layout Controls
 
 - **Alignment**: fore edge, spine, or center alignment
-- **Overall Curve**: bends the row in its placement plane while keeping the start fixed
+- **Overall Curve**: offsets book positions in depth while preserving original spacing and parallel orientation
 - **Lean Amount**: probability that a book leans
 - **Lean Direction**: preference for left or right leaning
 - **Lean Angle**: maximum lean angle
@@ -108,6 +114,7 @@ During endpoint placement, use `X`, `Y`, or `Z` to constrain the direction.
 - **Inset / Protrude Bias**: favors inset or protruding books
 
 Shelf offsets follow each book's local curve direction and do not alter horizontal spacing.
+Overall Curve does not rotate individual books. Only the explicit Leaning controls can change a Shelf book's angle.
 
 ## Stack Workflow
 
@@ -133,6 +140,7 @@ Configure the increment under `Preferences > Add-ons > Book Factory > Stack dire
 
 Each affected Stack book independently chooses Left, Right, Backward, or Forward. Books remain horizontal, their Z
 spacing remains unchanged, and both smooth curve axes can be combined with the random offsets.
+Forward Curve and Side Curve change layer positions only and never rotate the books themselves.
 
 Stack books are grouped by type and ordered by average cover area. Larger covers are placed lower, and books inside
 each type group are also ordered from larger to smaller.
@@ -266,7 +274,8 @@ Book-Factory/
 |   |-- Book-Factory-V1.0.zip
 |   |-- Book-Factory-V1.1.zip
 |   |-- Book-Factory-V1.2.zip
-|   `-- Book-Factory-V1.3.zip
+|   |-- Book-Factory-V1.3.zip
+|   `-- Book-Factory-V1.4.zip
 |-- LICENSE                    GPL-3.0 license text
 |-- NOTICE                     attribution and derivative-work notice
 `-- README.md
@@ -325,6 +334,8 @@ Book Factory 是一个用于 Blender 的程序化书籍生成工具，可创建�
 - 按书本顺序排列到 0-1 的 UV
 - 英文、中文、日文界面切换
 
-安装包：[`dist/Book-Factory-V1.3.zip`](dist/Book-Factory-V1.3.zip)
+安装包：[`dist/Book-Factory-V1.4.zip`](dist/Book-Factory-V1.4.zip)
+
+详细中文说明：[docs/USER_GUIDE_ZH.md](docs/USER_GUIDE_ZH.md)
 
 许可证：GPL-3.0-or-later。该项目基于 Oliver Weissbarth 等贡献者开发的 BookGen，原作者及许可证信息已保留。
