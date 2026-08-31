@@ -1,4 +1,4 @@
-# Book Factory V1.4
+# Book Factory V1.5
 
 Book Factory is a procedural book-building add-on for Blender. It creates editable shelves, horizontal stacks,
 standard books, and lightweight single-shell book assets with deterministic variation, curved book geometry,
@@ -33,15 +33,15 @@ Book Factory is free software distributed under **GPL-3.0-or-later**.
 
 Download the installable package from:
 
-[`dist/Book-Factory-V1.4.zip`](dist/Book-Factory-V1.4.zip)
+[`dist/Book-Factory-V1.5.zip`](dist/Book-Factory-V1.5.zip)
 
 ## Installation
 
-1. Download `Book-Factory-V1.4.zip`.
+1. Download `Book-Factory-V1.5.zip`.
 2. Open Blender.
 3. Go to `Edit > Preferences > Add-ons` or `Get Extensions`.
 4. Open the menu and choose `Install from Disk`.
-5. Select `Book-Factory-V1.4.zip`.
+5. Select `Book-Factory-V1.5.zip`.
 6. Enable **Book Factory** if Blender does not enable it automatically.
 7. Open the 3D View sidebar with `N` and select the **Book Factory** tab.
 
@@ -76,6 +76,12 @@ The compact interface is divided into four collapsible cards:
 
 Only properties relevant to the selected Shelf or Stack are shown. Shared appearance and model properties remain
 visible in both modes.
+
+### Random Spine Side
+
+`Random Spine Side` is shared by Shelf and Stack. When enabled, `Flipped Books (%)` determines how many books rotate
+180° so their spine and fore edge swap sides. The result is deterministic from Random Seed and works with standard and
+Low Poly presets. It changes orientation only, not book position or dimensions.
 
 ### Bidirectional Selection Sync
 
@@ -275,7 +281,8 @@ Book-Factory/
 |   |-- Book-Factory-V1.1.zip
 |   |-- Book-Factory-V1.2.zip
 |   |-- Book-Factory-V1.3.zip
-|   `-- Book-Factory-V1.4.zip
+|   |-- Book-Factory-V1.4.zip
+|   `-- Book-Factory-V1.5.zip
 |-- LICENSE                    GPL-3.0 license text
 |-- NOTICE                     attribution and derivative-work notice
 `-- README.md
@@ -334,7 +341,7 @@ Book Factory 是一个用于 Blender 的程序化书籍生成工具，可创建�
 - 按书本顺序排列到 0-1 的 UV
 - 英文、中文、日文界面切换
 
-安装包：[`dist/Book-Factory-V1.4.zip`](dist/Book-Factory-V1.4.zip)
+安装包：[`dist/Book-Factory-V1.5.zip`](dist/Book-Factory-V1.5.zip)
 
 详细中文说明：[docs/USER_GUIDE_ZH.md](docs/USER_GUIDE_ZH.md)
 

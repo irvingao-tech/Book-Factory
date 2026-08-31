@@ -65,6 +65,7 @@ class Book:
         planar_offset=0.0,
         low_poly=False,
         low_poly_segments=4,
+        flip_sides=False,
     ):
         self.height = cover_height
         self.width = page_thickness + 2 * cover_thickness
@@ -93,6 +94,7 @@ class Book:
         self.spine_segments = unified_segments
         self.low_poly = low_poly
         self.low_poly_segments = min(max(int(low_poly_segments), 1), 6)
+        self.flip_sides = flip_sides
         self.planar_offset = (
             Vector((0.0, float(planar_offset)))
             if isinstance(planar_offset, (int, float))

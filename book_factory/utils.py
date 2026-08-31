@@ -167,6 +167,8 @@ def get_shelf_parameters(context, shelf_id=0, settings=None):
     parameters = {
         "scale": properties.scale,
         "seed": properties.seed + shelf_id,
+        "random_spine_side": properties.random_spine_side,
+        "flipped_book_percentage": properties.flipped_book_percentage,
         "alignment": properties.alignment,
         "shelf_depth_offset": properties.shelf_depth_offset,
         "shelf_offset_chance": properties.shelf_offset_chance,
@@ -235,6 +237,8 @@ def get_stack_parameters(context, shelf_id=0, settings=None):
     parameters = {
         "scale": properties.scale,
         "seed": properties.seed + shelf_id,
+        "random_spine_side": properties.random_spine_side,
+        "flipped_book_percentage": properties.flipped_book_percentage,
         "rotation": properties.rotation,
         "group_curve": properties.group_curve,
         "stack_side_curve": properties.stack_side_curve,

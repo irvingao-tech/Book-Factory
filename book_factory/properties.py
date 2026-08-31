@@ -388,6 +388,24 @@ class BookGenProperties(bpy.types.PropertyGroup):
 
     seed: IntProperty(name="seed", default=0, update=update, options=set())
 
+    random_spine_side: BoolProperty(
+        name="random spine side",
+        description="Randomly flip selected books so the spine or fore edge faces the opposite side",
+        default=False,
+        update=update,
+        options=set(),
+    )
+    flipped_book_percentage: FloatProperty(
+        name="flipped books",
+        description="Percentage of books rotated 180 degrees to reverse spine and fore-edge sides",
+        subtype="PERCENTAGE",
+        min=0.0,
+        max=100.0,
+        default=25.0,
+        update=update,
+        options=set(),
+    )
+
     group_curve: FloatProperty(
         name="overall curve",
         description="Bend the layout from a fixed start to this tangent angle at the endpoint",

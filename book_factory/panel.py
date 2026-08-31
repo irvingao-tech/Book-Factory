@@ -334,7 +334,7 @@ class BOOKGEN_PT_MainPanel(bpy.types.Panel):
     Draws the main bookgen panel
     """
 
-    bl_label = "Book Factory V1.4"
+    bl_label = "Book Factory V1.5"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "Book Factory"
@@ -454,6 +454,9 @@ class BOOKGEN_PT_MainPanel(bpy.types.Panel):
         if layout_card:
             layout_card.prop(settings, "scale", text=t("Global Scale"))
             layout_card.prop(settings, "seed", text=t("Random Seed"))
+            layout_card.prop(settings, "random_spine_side", text=t("Random Spine Side"))
+            if settings.random_spine_side:
+                layout_card.prop(settings, "flipped_book_percentage", text=t("Flipped Books (%)"))
             layout_card.separator(factor=0.5)
             if active_grouping_is(context, "SHELF"):
                 layout_card.prop(settings, "group_curve", text=t("Overall Curve"))

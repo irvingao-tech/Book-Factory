@@ -100,7 +100,8 @@ class Shelf:
         book.location += Vector((offset, lateral, 0))
         book.location = self.rotation_matrix @ book.location
 
-        book.rotation = self.rotation_matrix @ Matrix.Rotation(book.lean_angle, 3, "Y")
+        flip_rotation = Matrix.Rotation(radians(180) if book.flip_sides else 0.0, 3, "Z")
+        book.rotation = self.rotation_matrix @ flip_rotation @ Matrix.Rotation(book.lean_angle, 3, "Y")
 
         book.location += self.origin
 
@@ -367,6 +368,10 @@ class Shelf:
             maximum = maximum_offset * (1.0 + min(bias, 0.0))
             planar_offset = random.uniform(minimum, maximum)
 
+        flip_sides = p["random_spine_side"] and (
+            random.random() * 100.0 < p["flipped_book_percentage"]
+        )
+
         return {
             "cover_height": book_height,
             "cover_thickness": cover_thickness,
@@ -389,4 +394,5 @@ class Shelf:
             "planar_offset": (0.0, planar_offset),
             "low_poly": p["low_poly"],
             "low_poly_segments": p["low_poly_segments"],
+            "flip_sides": flip_sides,
         }

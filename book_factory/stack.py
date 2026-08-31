@@ -89,6 +89,7 @@ class Stack:
 
         z_rotation_rnd = (random.random() - 0.5) * self.parameters["rotation"] * 180
         z_rotation = radians(180) if (self.parameters["stack_top_face"] == "1") else 0
+        side_rotation = radians(180) if book.flip_sides else 0
         y_rotation = int(self.parameters["stack_top_face"]) * radians(-90)
 
         _arc_vertical, lateral, _tangent = arc_coordinates(
@@ -108,7 +109,7 @@ class Stack:
         book.location = self.rotation_matrix @ book.location
         book.rotation = (
             self.rotation_matrix
-            @ Matrix.Rotation(radians(z_rotation_rnd) + z_rotation, 3, "Z")
+            @ Matrix.Rotation(radians(z_rotation_rnd) + z_rotation + side_rotation, 3, "Z")
             @ Matrix.Rotation(y_rotation, 3, "Y")
         )
 
@@ -255,6 +256,10 @@ class Stack:
                 (0.0, -distance),
             )[direction]
 
+        flip_sides = p["random_spine_side"] and (
+            random.random() * 100.0 < p["flipped_book_percentage"]
+        )
+
         return {
             "cover_height": book_height,
             "cover_thickness": cover_thickness,
@@ -275,4 +280,5 @@ class Stack:
             "planar_offset": planar_offset,
             "low_poly": p["low_poly"],
             "low_poly_segments": p["low_poly_segments"],
+            "flip_sides": flip_sides,
         }

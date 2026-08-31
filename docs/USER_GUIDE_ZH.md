@@ -1,4 +1,4 @@
-# Book Factory V1.4 详细使用说明
+# Book Factory V1.5 详细使用说明
 
 Book Factory 是一个 Blender 程序化书籍生成插件，可以在任意网格表面创建书架式排列（Shelf）和水平堆叠（Stack），并提供真实尺寸预设、标准模型、Low Poly 模型、随机变化、材质、曲线排列、UV 排列和非破坏式冻结功能。
 
@@ -10,7 +10,7 @@ Book Factory 是一个 Blender 程序化书籍生成插件，可以在任意网�
 
 ## 2. 安装
 
-1. 下载 `Book-Factory-V1.4.zip`。
+1. 下载 `Book-Factory-V1.5.zip`。
 2. 打开 Blender。
 3. 进入 `Edit > Preferences > Add-ons` 或 `Get Extensions`。
 4. 点击右上角菜单。
@@ -312,6 +312,21 @@ Low Poly 使用单一封闭外壳，没有分离封面和独立书芯内部结�
 - Stack 平面旋转
 
 改变 Seed 可以快速获得另一套排列。
+
+### 14.1 随机书脊朝向
+
+`Random Spine Side` 同时支持 Shelf 和 Stack。
+
+开启后，`Flipped Books (%)` 控制有多少本书旋转 180°，使书脊与书页前缘交换朝向。
+
+```text
+0%    所有书保持默认朝向
+25%   大约四分之一反向
+50%   大约一半反向
+100%  所有书反向
+```
+
+该功能只改变朝向，不改变书本位置、尺寸或排列间距。标准版和 Low Poly 都支持，相同 Seed 会得到相同的反向书本分布。
 
 ## 15. Auto Rebuild 和性能
 
